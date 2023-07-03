@@ -1,10 +1,12 @@
 version: "3.3"
 
 services:
-  python-template:
+  server-acq:
     build: ./
-    container_name: python-template
+    container_name: server-acq
     volumes:
       - .:/workspace
     stdin_open: true
     tty: true
+    ports:
+      - "8080:8080"
