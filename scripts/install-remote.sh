@@ -1,18 +1,12 @@
 #!/bin/bash
 
-if ! [ -f common.sh ]; then
-    printf "Error\n"
-    exit 1
-fi
+DIR="$(dirname "$0")"
 
-
-. ./common.sh
-
+. ${DIR}/common.sh
 
 function print_help() {
     print_info "bla bla"
 }
-
 
 check_base_dir
 
