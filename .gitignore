@@ -153,3 +153,4 @@ cython_debug/
 
 log*
 *.tar.gz
+version.py

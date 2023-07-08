@@ -35,6 +35,8 @@ else
     print_error "IP $remote_ip is invalid."
 fi
 
+./update-git-version.py
+
 files=($(cd .. && ls *.py server_acq/*.py))
 
 if (( clean == 1 )); then
