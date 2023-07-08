@@ -4,4 +4,3 @@ pycodestyle
 pylint
 pytest
 mock
-flask

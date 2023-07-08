@@ -1,3 +1,8 @@
+DEFAULT_BB_USER="debian"
+
+DEPLOY_FILENAME="server_acq_deploy.tar.gz"
+DEPLOY_DEST_DIR="/home/debian/server-acq"
+
 NC='\033[0;0m'
 RED="\033[1;31m"
 GREEN="\033[1;32m"

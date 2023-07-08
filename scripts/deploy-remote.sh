@@ -1,9 +1,5 @@
 #!/bin/bash
 
-DEFAULT_BB_USER="debian"
-DEPLOY_FILENAME="server_acq_deploy.tar.gz"
-DEPLOY_DEST_DIR="/home/debian/server-acq"
-
 DIR="$(dirname "$0")"
 
 . ${DIR}/common.sh
@@ -13,6 +9,8 @@ function print_help() {
     print_line "\t to deploy files on the target: $0 -a <remote ip>"
     print_line "\t to clean files on the target: $0 -a <remote ip> -c"
     print_line "\t to show this message: $0 -h"
+    print_line
+    print_info "This script needs an authorized key with sudo user and nopassw allowance"
     exit 0
 }
 
@@ -54,6 +52,7 @@ print_info "Copying the files to the target ${DEFAULT_BB_USER}@${remote_ip} on d
 ssh ${DEFAULT_BB_USER}@${remote_ip} "mkdir -p ${DEPLOY_DEST_DIR}" > /dev/null 2>&1
 rsync -av --progress $DEPLOY_FILENAME "${DEFAULT_BB_USER}@${remote_ip}":${DEPLOY_DEST_DIR} > /dev/null 2>&1
 ssh ${DEFAULT_BB_USER}@${remote_ip} "tar -xzvf ${DEPLOY_DEST_DIR}/${DEPLOY_FILENAME} -C ${DEPLOY_DEST_DIR} && rm ${DEPLOY_DEST_DIR}/${DEPLOY_FILENAME}" > /dev/null 2>&1
+ssh ${DEFAULT_BB_USER}@${remote_ip} "sudo systemctl restart server_acq" > /dev/null 2>&1
 
 print_info "Deleting compressed file"
 rm ${DEPLOY_FILENAME}
