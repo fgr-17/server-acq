@@ -9,13 +9,17 @@ ERROR_COLOR="$RED"
 WHITE="\033[1;37m"
 CURRENT_DIR=$(pwd)
 
+
+function print_line() {
+    printf "$1\n"
+}
+
 function print_error() {
-    printf "${RED}Error:${NC} $1\n"
+    print_line "${RED}Error:${NC} $1"
 }
 
 function print_info() {
-    printf "${YELLOW}Info:${NC} $1\n"
-
+    print_line "${YELLOW}Info:${NC} $1"
 }
 
 function check_base_dir() {

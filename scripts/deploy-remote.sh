@@ -9,7 +9,11 @@ DIR="$(dirname "$0")"
 . ${DIR}/common.sh
 
 function print_help() {
-    print_info "bla bla"
+    print_line "Usage: "
+    print_line "\t to deploy files on the target: $0 -a <remote ip>"
+    print_line "\t to clean files on the target: $0 -a <remote ip> -c"
+    print_line "\t to show this message: $0 -h"
+    exit 0
 }
 
 check_base_dir
@@ -33,30 +37,23 @@ else
     print_error "IP $remote_ip is invalid."
 fi
 
-# files=(`*.py` `server_acq/*.py`)
 files=($(cd .. && ls *.py server_acq/*.py))
-
-printf "${files[@]}"
-
 
 if (( clean == 1 )); then
     print_info "Cleaning deployed files"
-    ssh ${DEFAULT_BB_USER}@${remote_ip} "cd ${DEPLOY_DEST_DIR} && rm -rf ${files[@]}"
+    ssh ${DEFAULT_BB_USER}@${remote_ip} "cd ${DEPLOY_DEST_DIR} && rm -rf ${files[@]}" > /dev/null 2>&1
     exit 0
 fi
 
-print_info "Compressing local files"
-cd ..
-printf "$PWD\n"
-ls -l
-tar -czvf ${DEPLOY_FILENAME} "${files[@]}"
+print_info "Compressing local files:"
+print_line
+cd .. && tar -czvf ${DEPLOY_FILENAME} "${files[@]}"
+print_line
 
-print_info "Copying the files to the target"
+print_info "Copying the files to the target ${DEFAULT_BB_USER}@${remote_ip} on dir ${DEPLOY_DEST_DIR}"
 ssh ${DEFAULT_BB_USER}@${remote_ip} "mkdir -p ${DEPLOY_DEST_DIR}" > /dev/null 2>&1
 rsync -av --progress $DEPLOY_FILENAME "${DEFAULT_BB_USER}@${remote_ip}":${DEPLOY_DEST_DIR} > /dev/null 2>&1
 ssh ${DEFAULT_BB_USER}@${remote_ip} "tar -xzvf ${DEPLOY_DEST_DIR}/${DEPLOY_FILENAME} -C ${DEPLOY_DEST_DIR} && rm ${DEPLOY_DEST_DIR}/${DEPLOY_FILENAME}" > /dev/null 2>&1
-
-
 
 print_info "Deleting compressed file"
 rm ${DEPLOY_FILENAME}
