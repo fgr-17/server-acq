@@ -1,0 +1,16 @@
+{
+    "sensors": [
+        {
+            "type": "level",
+            "sensors": ["1", "2"]
+        },
+        {
+            "type": "height",
+            "sensors": ["1"]
+        },
+        {
+            "type": "chlorine",
+            "sensors": ["1"]
+        }
+    ]
+}
