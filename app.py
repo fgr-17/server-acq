@@ -6,6 +6,6 @@ from server_acq import app
 
 logging.basicConfig(level=logging.INFO)
 logging.info('Starting acquisition server ...')
-logging.info(f'{hash}@{branch}')
+logging.info(f'Version: {hash}@{branch}')
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080)
