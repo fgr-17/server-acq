@@ -35,9 +35,10 @@ else
     print_error "IP $remote_ip is invalid."
 fi
 
-./update-git-version.py
+VERSION=$(./update-git-version.sh)
+print_info "Updating app version to $VERSION"
 
-files=($(cd .. && ls *.py server_acq/*.py))
+files=($(cd .. && ls *.py server_acq/*.py sensors-mock/*))
 
 if (( clean == 1 )); then
     print_info "Cleaning deployed files"
