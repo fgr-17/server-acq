@@ -38,7 +38,7 @@ fi
 VERSION=$(./update-git-version.sh)
 print_info "Updating app version to $VERSION"
 
-files=($(cd .. && ls *.py server_acq/*.py sensors-mock/*))
+files=($(cd .. && ls *.py views/*.py sensors-mock/* templates/*))
 
 if (( clean == 1 )); then
     print_info "Cleaning deployed files"
