@@ -2,7 +2,7 @@
 
 PYLINT_MAX_LINE_LENGTH=200
 PYLINT_MAX_ARGS=6
-SOURCE_PATH='../'
+SOURCE_PATH='..'
 CURRENT_DIR=$(pwd)
 PACKAGE_PATH='/workspace/views'
 
@@ -61,14 +61,15 @@ function lint() {
     return 0
 }
 
-function test() {
+function test_suite() {
     printf "\n${bold}Running unit tests ...${normal}\n"
     cd "${SOURCE_PATH}"
-    echo $PWD && pytest
+    echo $PWD 
+    pytest
     return $?
 }
 
-MAIN_FILE="${SOURCE_PATH}/app.py"
+MAIN_FILE="app.py"
 
 INIT_PATH=$PWD
 
@@ -86,23 +87,25 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-test
+test_suite
 if [ $? -ne 0 ]; then
-    printf "Please test cases before continue...\n"
+    printf "Please check test cases before continue...\n"
     exit 1
 fi
 
 
-printf "Building  Package"
-cd $CURRENT_DIR
-cd $PACKAGE_PATH
-# python3 -m build
-pip install --upgrade .
-if [ $? -ne 0 ]; then
-    printf "Couldn't build package, exiting...\n"
-    exit 1
-fi
+# printf "Building  Package"
+# cd $CURRENT_DIR
+# cd $PACKAGE_PATH
+# # python3 -m build
+# pip install --upgrade .
+# if [ $? -ne 0 ]; then
+#     printf "Couldn't build package, exiting...\n"
+#     exit 1
+# fi
 
 
-cd $INIT_PATH
-${MAIN_FILE}
+cd "${INIT_PATH}"
+cd ..
+echo $PWD
+./${MAIN_FILE}
