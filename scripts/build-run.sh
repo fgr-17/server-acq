@@ -2,16 +2,16 @@
 
 PYLINT_MAX_LINE_LENGTH=200
 PYLINT_MAX_ARGS=6
-SOURCE_PATH='../src'
+SOURCE_PATH='..'
 CURRENT_DIR=$(pwd)
-PACKAGE_PATH='/workspace/src/package'
+PACKAGE_PATH='/workspace/views'
 
 bold=$(tput bold)
 normal=$(tput sgr0)
 
 packages=(
-    "main.py"
-    "package/package"
+    "app.py"
+    "views/views.py"
 )
 
 function check_base_dir() {
@@ -47,9 +47,11 @@ function style() {
 function lint() {
     printf "\n${bold}Linting source files ...${normal}\n"
 
+    GOOD_NAMES='f'
+
     for package in ${packages[@]}; do
         printf "\t> Checking $package..."
-        pylint --max-line-length=$PYLINT_MAX_LINE_LENGTH --max-args=$PYLINT_MAX_ARGS  $SOURCE_PATH/$package
+        pylint --max-line-length=$PYLINT_MAX_LINE_LENGTH --max-args=$PYLINT_MAX_ARGS --good-names=$GOOD_NAMES $SOURCE_PATH/$package
 
         if [ $? -ne 0 ]; then
             return 1
@@ -59,13 +61,15 @@ function lint() {
     return 0
 }
 
-function test() {
+function test_suite() {
     printf "\n${bold}Running unit tests ...${normal}\n"
-    pytest -s "${SOURCE_PATH}"
+    cd "${SOURCE_PATH}"
+    echo $PWD 
+    pytest
     return $?
 }
 
-MAIN_FILE="${SOURCE_PATH}/main.py"
+MAIN_FILE="app.py"
 
 INIT_PATH=$PWD
 
@@ -83,23 +87,25 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-test
+test_suite
 if [ $? -ne 0 ]; then
-    printf "Please test cases before continue...\n"
+    printf "Please check test cases before continue...\n"
     exit 1
 fi
 
 
-printf "Building  Package"
-cd $CURRENT_DIR
-cd $PACKAGE_PATH
-# python3 -m build
-pip install --upgrade .
-if [ $? -ne 0 ]; then
-    printf "Couldn't build package, exiting...\n"
-    exit 1
-fi
+# printf "Building  Package"
+# cd $CURRENT_DIR
+# cd $PACKAGE_PATH
+# # python3 -m build
+# pip install --upgrade .
+# if [ $? -ne 0 ]; then
+#     printf "Couldn't build package, exiting...\n"
+#     exit 1
+# fi
 
 
-cd $INIT_PATH
-${MAIN_FILE}
+cd "${INIT_PATH}"
+cd ..
+echo $PWD
+./${MAIN_FILE}
