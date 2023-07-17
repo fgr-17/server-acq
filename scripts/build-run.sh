@@ -2,16 +2,16 @@
 
 PYLINT_MAX_LINE_LENGTH=200
 PYLINT_MAX_ARGS=6
-SOURCE_PATH='../src'
+SOURCE_PATH='../'
 CURRENT_DIR=$(pwd)
-PACKAGE_PATH='/workspace/src/package'
+PACKAGE_PATH='/workspace/views'
 
 bold=$(tput bold)
 normal=$(tput sgr0)
 
 packages=(
-    "main.py"
-    "package/package"
+    "app.py"
+    "views/views.py"
 )
 
 function check_base_dir() {
@@ -47,9 +47,11 @@ function style() {
 function lint() {
     printf "\n${bold}Linting source files ...${normal}\n"
 
+    GOOD_NAMES='f'
+
     for package in ${packages[@]}; do
         printf "\t> Checking $package..."
-        pylint --max-line-length=$PYLINT_MAX_LINE_LENGTH --max-args=$PYLINT_MAX_ARGS  $SOURCE_PATH/$package
+        pylint --max-line-length=$PYLINT_MAX_LINE_LENGTH --max-args=$PYLINT_MAX_ARGS --good-names=$GOOD_NAMES $SOURCE_PATH/$package
 
         if [ $? -ne 0 ]; then
             return 1
@@ -61,11 +63,12 @@ function lint() {
 
 function test() {
     printf "\n${bold}Running unit tests ...${normal}\n"
-    pytest -s "${SOURCE_PATH}"
+    cd "${SOURCE_PATH}"
+    echo $PWD && pytest
     return $?
 }
 
-MAIN_FILE="${SOURCE_PATH}/main.py"
+MAIN_FILE="${SOURCE_PATH}/app.py"
 
 INIT_PATH=$PWD
 

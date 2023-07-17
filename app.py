@@ -1,16 +1,18 @@
 #!/opt/venv/bin/python
 
+""" Main app """
+
 import logging
-from version import hash, branch
+from version import git_hash, git_branch
 from flask import Flask
+import views
 
 logging.basicConfig(level=logging.INFO)
 logging.info('Starting acquisition server ...')
-logging.info(f'Version: {hash}@{branch}')
+logging.info('Version: %s@%s', git_hash, git_branch)
 
 app = Flask(__name__)
 app.secret_key = 'some-secret-key'
-import views
 views.init_app(app)
 
 if __name__ == "__main__":
