@@ -154,3 +154,5 @@ cython_debug/
 log*
 *.tar.gz
 version.py
+
+sensors_struct/
